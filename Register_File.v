@@ -14,13 +14,21 @@ module Register_File(
          if(rst)
          begin
             for(i=0; i < 15; i+=1) begin
-                data[i] <= i;
+                registers[i] <= i;
             end
          end
+
          else if(writeBackEn)
          begin
             registers[Dest_wb] <= Result_WB;
-         end   
+         end
+         
+         else 
+         begin
+             for(i=0; i < 15; i+=1) begin
+                registers[i] <= registers[i];
+            end
+         end 
     end
 endmodule 
 

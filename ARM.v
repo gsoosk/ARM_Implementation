@@ -35,6 +35,7 @@ module ARM (input clk,
         clk, 
         rst, 
         if_pc_out, 
+        if_instruction_out,
         id_pc_in
     );
     ID_Stage_Reg id_stage_reg(

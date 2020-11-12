@@ -18,7 +18,7 @@ module Condition_Check(
     input[3:0] cond,
     input[3:0] status,
     output wire result
-    );
+);
 
     wire z, c, n, v;
     assign {z, c, n, v} = status;

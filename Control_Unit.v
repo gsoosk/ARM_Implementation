@@ -30,7 +30,7 @@ module Control_Unit(
     output reg mem_r_en,
     output reg wb_en,
     output reg status_w_en,
-    output reg branch_taken
+    output reg branch_taken,
     output reg imm
 );
 
@@ -102,18 +102,18 @@ module Control_Unit(
                     1'b1: begin
                         // LDR
                         mem_r_en = 1'b1;
-                        exec_cmd = LDR_ALU;
+                        exec_cmd = `LDR_ALU;
                         wb_en = 1'b1;
                     end
                     1'b0: begin
                         // STR
                         mem_w_en = 1'b1;
-                        exec_cmd = STR_ALU;
+                        exec_cmd = `STR_ALU;
                     end
                 endcase
             end
             `BRANCH_INS_TYPE: begin
-                branch_taken = 1'b0;
+                branch_taken = 1'b1;
             end
             end
         endcase
