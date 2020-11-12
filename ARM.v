@@ -7,7 +7,7 @@ module ARM (input clk,
     wire[31:0] BranchAddress;
     assign BranchAddress = 32'b0;
     
-    // Instruction Fetch Stage:
+    // ################################# Instruction Fetch Stage: ###################################
     wire[31:0] if_pc_in, if_instruction_in, if_pc_out, if_instruction_out;
     IF_Stage if_stage(
         clk, 
@@ -29,25 +29,48 @@ module ARM (input clk,
         if_instruction_out
     );
     
-    // Instruction Decode Stage:
+    // ################################## Instruction Decode Stage: #################################
     wire[31:0] id_pc_in, id_pc_out;
+    wire id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in;
+    wire[3:0] id_exec_cmd_in;
+    wire[31:0] id_val_rm_in;
+    wire[23:0] id_signed_immed_24_in;
+    wire[3:0] id_dest_in; 
+    wire id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out;
+    wire[3:0] id_exec_cmd_out;
+    wire[31:0] id_val_rm_out;
+    wire[23:0] id_signed_immed_24_out;
+    wire[3:0] id_dest_out;
+
     ID_Stage id_stage(
-        clk, 
-        rst, 
+        clk, rst,
         if_pc_out, 
         if_instruction_out,
-        id_pc_in
-    );
-    ID_Stage_Reg id_stage_reg(
-        clk, 
-        rst, 
-        flush, 
-        freeze,
-        id_pc_in, 
-        id_pc_out
+        id_pc_in,
+        id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
+        id_exec_cmd_in,
+        id_val_rm_in,
+        id_signed_immed_24_in,
+        id_dest_in
     );
 
-    // Executaion Stage:
+    ID_Stage_Reg id_stage_reg(
+        clk, rst, flush, freeze,
+        id_pc_in, 
+        id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
+        id_exec_cmd_in,
+        id_val_rm_in,
+        id_signed_immed_24_in,
+        id_dest_in,
+        id_pc_out,
+        id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out,
+        id_exec_cmd_out,
+        id_val_rm_out,
+        id_signed_immed_24_out,
+        id_dest_out
+    );
+
+    // ################################### Executaion Stage: ################################
     wire[31:0] exe_pc_in, exe_pc_out;
     EXE_Stage exe_stage(
         clk, 
@@ -64,7 +87,7 @@ module ARM (input clk,
         exe_pc_out
     );
 
-    // Memory Stage:
+    // ################################# Memory Stage: ############################################
     wire[31:0] mem_pc_in, mem_pc_out;
     MEM_Stage mem_stage(
         clk, 
@@ -81,7 +104,7 @@ module ARM (input clk,
         mem_pc_out
     );
 
-    // Write Block Stage:
+    // ################################### Write Block Stage: #######################################
     wire[31:0] wb_pc_in, wb_pc_out;
     WB_Stage wb_stage(
         clk, 
