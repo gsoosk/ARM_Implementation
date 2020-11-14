@@ -16,7 +16,7 @@ module ID_Stage (
     // Chunking the Instruction 
     wire[3:0] cond;
     assign cond = instruction[31:28];
-    wire[2:0] mode;
+    wire[1:0] mode;
     assign mode = instruction[27:26];
     wire immediate;
     assign immediate = instruction[25];
@@ -71,7 +71,7 @@ module ID_Stage (
 
     // Register File
         // Register file address mux
-        wire src2;
+        wire[3:0] src2;
         assign src2 = mem_w_en ? rd : rm ;
 
     Register_File register_file(

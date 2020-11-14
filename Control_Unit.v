@@ -25,7 +25,7 @@ module Control_Unit(
     input [3:0] opcode,
     input s,
     input imm_in,
-    input mode,
+    input [1:0] mode,
     output reg[3:0] exec_cmd,
     output reg mem_w_en,
     output reg mem_r_en,
