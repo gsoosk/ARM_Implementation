@@ -17,7 +17,7 @@
 module Condition_Check(
     input[3:0] cond,
     input[3:0] status,
-    output wire result
+    output reg result
 );
 
     wire z, c, n, v;
@@ -97,7 +97,7 @@ module Condition_Check(
             end
 
             `AL:begin
-                sresult = 1'b1;
+                result = 1'b1;
             end
         endcase
     end

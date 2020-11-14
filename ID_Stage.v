@@ -5,9 +5,9 @@ module ID_Stage (
     output[31:0] PC,
     output mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
     output[3:0] exec_cmd,
-    output[31:0] val_rm,
+    output[31:0] val_rm, val_rn,
     output[23:0] signed_immed_24,
-    output[3:0] dest;
+    output[3:0] dest
 );
     assign PC = PC_in; 
 
@@ -24,14 +24,13 @@ module ID_Stage (
     assign opcode = instruction[24:21];
     wire s;
     assign s = instruction[20];
-    wire[3:0] rn, rd, rm, dest;
+    wire[3:0] rn, rd, rm;
     assign rn = instruction[19:16];
     assign rd = instruction[15:12];
     assign dest = rd;
     assign rm = instruction[3:0];
     wire[11:0] shift_operand;
     assign shift_operand = instruction[11:0];
-    wire[23:0] signed_immed_24;
     assign signed_immed_24 = instruction[23:0];
 
 
@@ -42,6 +41,7 @@ module ID_Stage (
         .opcode(opcode),
         .s(s),
         .imm_in(immediate),
+        .mode(mode),
         .exec_cmd(exec_cmd_c),
         .mem_w_en(mem_w_en_c),
         .mem_r_en(mem_r_en_c),
@@ -67,12 +67,9 @@ module ID_Stage (
     wire[9:0] mux_input;
     assign mux_input = {mem_r_en_c, mem_w_en_c, wb_en_c, status_w_en_c, branch_taken_c, imm_c, exec_cmd_c};
 
-    wire mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm;
-    wire[3:0] exec_cmd;
     assign {mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm, exec_cmd} = mux_selector ?  10'b0 : mux_input;
 
     // Register File
-    wire[31:0] val_rm, val_rn;
         // Register file address mux
         wire src2;
         assign src2 = mem_w_en ? rd : rm ;

@@ -25,6 +25,7 @@ module Control_Unit(
     input [3:0] opcode,
     input s,
     input imm_in,
+    input mode,
     output reg[3:0] exec_cmd,
     output reg mem_w_en,
     output reg mem_r_en,
@@ -67,33 +68,33 @@ module Control_Unit(
                     end
                     `ADC: begin
                         wb_en = 1'b1;
-                        exec_cmd = `ADC_ALU
+                        exec_cmd = `ADC_ALU;
                     end
                     `SUB: begin
                         wb_en = 1'b1;
-                        exec_cmd = `SUB_ALU
+                        exec_cmd = `SUB_ALU;
                     end
                     `SBC: begin
                         wb_en = 1'b1;
-                        exec_cmd = `SBC_ALU
+                        exec_cmd = `SBC_ALU;
                     end
                     `AND: begin
                         wb_en = 1'b1;
-                        exec_cmd = `AND_ALU
+                        exec_cmd = `AND_ALU;
                     end
                     `ORR: begin
                         wb_en = 1'b1;
-                        exec_cmd = `ORR_ALU
+                        exec_cmd = `ORR_ALU;
                     end
                     `EOR: begin
                         wb_en = 1'b1;
-                        exec_cmd = `EOR_ALU
+                        exec_cmd = `EOR_ALU;
                     end
                     `CMP: begin
-                        exec_cmd = `CMP_ALU
+                        exec_cmd = `CMP_ALU;
                     end
                     `TST: begin
-                        exec_cmd = `TST_ALU
+                        exec_cmd = `TST_ALU;
                     end 
                 endcase
             end
@@ -114,7 +115,6 @@ module Control_Unit(
             end
             `BRANCH_INS_TYPE: begin
                 branch_taken = 1'b1;
-            end
             end
         endcase
 

@@ -33,12 +33,12 @@ module ARM (input clk,
     wire[31:0] id_pc_in, id_pc_out;
     wire id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in;
     wire[3:0] id_exec_cmd_in;
-    wire[31:0] id_val_rm_in;
+    wire[31:0] id_val_rm_in, id_val_rn_in;
     wire[23:0] id_signed_immed_24_in;
     wire[3:0] id_dest_in; 
     wire id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out;
     wire[3:0] id_exec_cmd_out;
-    wire[31:0] id_val_rm_out;
+    wire[31:0] id_val_rm_out, id_val_rn_out;
     wire[23:0] id_signed_immed_24_out;
     wire[3:0] id_dest_out;
 
@@ -49,7 +49,7 @@ module ARM (input clk,
         id_pc_in,
         id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
         id_exec_cmd_in,
-        id_val_rm_in,
+        id_val_rm_in, id_val_rn_in,
         id_signed_immed_24_in,
         id_dest_in
     );
@@ -65,7 +65,7 @@ module ARM (input clk,
         id_pc_out,
         id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out,
         id_exec_cmd_out,
-        id_val_rm_out,
+        id_val_rm_out, id_val_rn_out,
         id_signed_immed_24_out,
         id_dest_out
     );

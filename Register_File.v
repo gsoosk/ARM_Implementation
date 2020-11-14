@@ -8,12 +8,12 @@ module Register_File(
     reg[31:0] registers [0:14];
     assign reg1 = registers[src1];
     assign reg2 = registers[src2];
-
+    integer i = 0;
     always @(negedge clk, posedge rst)
     begin
          if(rst)
          begin
-            for(i=0; i < 15; i+=1) begin
+            for(i = 0; i < 15; i = i + 1) begin
                 registers[i] <= i;
             end
          end
@@ -25,7 +25,7 @@ module Register_File(
          
          else 
          begin
-             for(i=0; i < 15; i+=1) begin
+             for(i = 0; i < 15; i = i + 1) begin
                 registers[i] <= registers[i];
             end
          end 
