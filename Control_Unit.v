@@ -5,7 +5,6 @@
 `define BRANCH_INS_TYPE  2'b10
 `define CO_PROC_INS_TYPE  2'b11
 
-`define NOP 4'b0000
 `define MOV 4'b1101
 `define MVN 4'b1111
 `define ADD 4'b0100
@@ -51,9 +50,6 @@ module Control_Unit(
         case (mode)
             `ARITHMATIC_INS_TYPE: begin
                 case (opcode)
-                    `NOP: begin
-                        // Do nothing!
-                    end
                     `MOV: begin
                         wb_en = 1'b1;
                         exec_cmd = `MOV_ALU;
