@@ -7,7 +7,7 @@
 `define AND_ALU 4'b0110
 `define ORR_ALU 4'b0111
 `define EOR_ALU 4'b1000
-`define CMP_ALU 4'b1100
-`define TST_ALU 4'b1110
-`define LDR_ALU 4'b1010
-`define STR_ALU 4'b1010
+`define CMP_ALU 4'b1000
+`define TST_ALU 4'b0110
+`define LDR_ALU 4'b0010
+`define STR_ALU 4'b0010
