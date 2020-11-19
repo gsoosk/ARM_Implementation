@@ -11,12 +11,12 @@ module Val_Two_Generator(
     );
     
     reg [31:0] imm_32_bit, rm_rotate;
-    assign result = is_mem_instruction == 1'b1 ? result[31:0] <= {20{shift_operand[11]}, shift_operand} : 
-    immediate == 1'b1 ? imm_32_bit : 
-    shift_operand[6:5] == `LSL : Rm << {shift_operand[11:7] :
-    shift_operand[6:5] == `LRL: Rm >> {shift_operand[11:7]} :
-    shift_operand[6:5] == `ASR: Rm >>> {shift_operand[11:7]} :
-    shift_operand[6:5] == `ROR ? rm_rotate;
+    assign result = is_mem_instruction == 1'b1  ? {20{shift_operand[11]}, shift_operand} : 
+                    immediate == 1'b1           ? imm_32_bit : 
+                    shift_operand[6:5] == `LSL  ? Rm << {shift_operand[11:7]} :
+                    shift_operand[6:5] == `LRL  ? Rm >> {shift_operand[11:7]} :
+                    shift_operand[6:5] == `ASR  ? Rm >>> {shift_operand[11:7]} :
+                    shift_operand[6:5] == `ROR  ? rm_rotate;
 
     always@(*) begin
         imm_32_bit = {24'b0, shift_operand[7:0]}
