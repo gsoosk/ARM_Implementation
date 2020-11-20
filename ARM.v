@@ -43,6 +43,7 @@ module ARM (input clk,
     wire[23:0] id_signed_immed_24_out;
     wire[3:0] id_dest_out;
     wire[11:0] id_shift_operand_out;
+    wire id_carry_out;
 
     ID_Stage id_stage(
         clk, rst,
@@ -67,13 +68,16 @@ module ARM (input clk,
         id_signed_immed_24_in,
         id_dest_in,
         id_shift_operand_in,
+        status_out[2],
+
         id_pc_out,
         id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out,
         id_exec_cmd_out,
         id_val_rm_out, id_val_rn_out,
         id_signed_immed_24_out,
         id_dest_out,
-        id_shift_operand_out
+        id_shift_operand_out,
+        id_carry_out
     );
 
     // ################################### Executaion Stage: ################################
@@ -97,7 +101,7 @@ module ARM (input clk,
         .PC_in(id_pc_out),
         .mem_r_en(id_mem_r_en_out), .mem_w_en(id_mem_w_en_out), 
         .wb_en(id_wb_en_out), .imm(id_imm_out),
-        input carry_in, //TODO: should be added to ID_Stage_Reg
+        .carry_in(id_carry_out),
         .shift_operand(id_shift_operand_out),
         .exec_cmd(id_exec_cmd_out),
         .val_rm(id_val_rm_out), .val_rn(id_val_rn_out),
