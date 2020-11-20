@@ -1,13 +1,14 @@
 module ID_Stage (
     input clk, rst,
-    input[31:0] PC_in,
-    input[31:0] instruction,
-    output[31:0] PC,
+    input [31:0] PC_in,
+    input [31:0] instruction,
+    output [31:0] PC,
     output mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
-    output[3:0] exec_cmd,
-    output[31:0] val_rm, val_rn,
-    output[23:0] signed_immed_24,
-    output[3:0] dest
+    output [3:0] exec_cmd,
+    output [31:0] val_rm, val_rn,
+    output [23:0] signed_immed_24,
+    output [3:0] dest,
+    output [11:0] shift_operand
 );
     assign PC = PC_in; 
 
@@ -29,7 +30,6 @@ module ID_Stage (
     assign rd = instruction[15:12];
     assign dest = rd;
     assign rm = instruction[3:0];
-    wire[11:0] shift_operand;
     assign shift_operand = instruction[11:0];
     assign signed_immed_24 = instruction[23:0];
 

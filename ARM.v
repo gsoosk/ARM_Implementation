@@ -36,11 +36,13 @@ module ARM (input clk,
     wire[31:0] id_val_rm_in, id_val_rn_in;
     wire[23:0] id_signed_immed_24_in;
     wire[3:0] id_dest_in; 
+    wire[11:0] id_shift_operand_in;
     wire id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out;
     wire[3:0] id_exec_cmd_out;
     wire[31:0] id_val_rm_out, id_val_rn_out;
     wire[23:0] id_signed_immed_24_out;
     wire[3:0] id_dest_out;
+    wire[11:0] id_shift_operand_out;
 
     ID_Stage id_stage(
         clk, rst,
@@ -51,7 +53,8 @@ module ARM (input clk,
         id_exec_cmd_in,
         id_val_rm_in, id_val_rn_in,
         id_signed_immed_24_in,
-        id_dest_in
+        id_dest_in,
+        id_shift_operand_in
     );
 
     ID_Stage_Reg id_stage_reg(
@@ -62,12 +65,14 @@ module ARM (input clk,
         id_val_rm_in, id_val_rn_in,
         id_signed_immed_24_in,
         id_dest_in,
+        id_shift_operand_in,
         id_pc_out,
         id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out,
         id_exec_cmd_out,
         id_val_rm_out, id_val_rn_out,
         id_signed_immed_24_out,
-        id_dest_out
+        id_dest_out,
+        id_shift_operand_out
     );
 
     // ################################### Executaion Stage: ################################

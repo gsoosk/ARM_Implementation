@@ -6,13 +6,15 @@ module ID_Stage_Reg (
     input [31:0] val_rm_in, val_rn_in,
     input [23:0] signed_immed_24_in,
     input [3:0] dest_in,
+    input [11:0] shift_operand_in,
 
     output reg [31:0] pc,
     output reg mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
     output reg [3:0] exec_cmd,
     output reg [31:0] val_rm, val_rn,
     output reg [23:0] signed_immed_24,
-    output reg [3:0] dest
+    output reg [3:0] dest,
+    output [11:0] shift_operand
 );
     always @(posedge clk, posedge rst) begin
         if (rst) 
@@ -29,6 +31,7 @@ module ID_Stage_Reg (
             val_rn <= 32'b0;
             signed_immed_24 <= 24'b0;
             dest <= 4'b0; 
+            shift_operand <= 12'b0;
         end
         else if (clk && flush)
         begin
@@ -44,6 +47,7 @@ module ID_Stage_Reg (
             val_rn <= 32'b0;
             signed_immed_24 <= 24'b0;
             dest <= 4'b0; 
+            shift_operand <= 12'b0;
         end
         else if (clk && ~freeze)
         begin
@@ -59,6 +63,7 @@ module ID_Stage_Reg (
             val_rn <= val_rn_in;
             signed_immed_24 <= signed_immed_24_in;
             dest <= dest_in; 
+            shift_operand <= shift_operand_in
         end 
         else
         begin
@@ -74,6 +79,7 @@ module ID_Stage_Reg (
             val_rn <= val_rn;
             signed_immed_24 <= signed_immed_24;
             dest <= dest;
+            shift_operand <= shift_operand;
         end
     end
 endmodule
