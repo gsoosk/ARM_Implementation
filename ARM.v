@@ -128,7 +128,14 @@ module ARM (input clk,
     );
 
     // ################################# Status Register: ############################################
+    wire [3:0] status_out;
+    Status_Register status_reg (
+        .clk(clk), .rst(rst),
+        .s(id_status_w_en_out),
+        .status_in(exe_alu_status_in),
 
+        .status(status_out)
+    );
     // ################################# Memory Stage: ############################################
     wire[31:0] mem_pc_in, mem_pc_out;
     MEM_Stage mem_stage(
