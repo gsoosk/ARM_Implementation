@@ -2,6 +2,7 @@ module ID_Stage (
     input clk, rst,
     input [31:0] PC_in,
     input [31:0] instruction,
+    input [3:0] status,
     output [31:0] PC,
     output mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
     output [3:0] exec_cmd,
@@ -56,7 +57,7 @@ module ID_Stage (
     wire condition_check_result;
     Condition_Check condition_check(
         .cond(cond),
-        .status(4'b0), // TODO: Input of status should be taken from the status register's output
+        .status(status), // TODO: Input of status should be taken from the status register's output
         .result(condition_check_result)
     );
 
