@@ -1,3 +1,4 @@
+`include "ALU_Commands.v"
 
 module ALUTB();
 	reg signed [31:0] a, b;

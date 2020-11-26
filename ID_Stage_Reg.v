@@ -67,7 +67,7 @@ module ID_Stage_Reg (
             val_rn <= val_rn_in;
             signed_immed_24 <= signed_immed_24_in;
             dest <= dest_in; 
-            shift_operand <= shift_operand_in
+            shift_operand <= shift_operand_in;
             carry <= carry_in;
         end 
         else

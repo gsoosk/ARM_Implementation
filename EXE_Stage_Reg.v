@@ -4,13 +4,13 @@ module EXE_Stage_Reg (
     input wb_en_in, mem_r_en_in, mem_w_en_in,
     input [31:0] alu_res_in,
     input [31:0] val_rm_in,
-    input [3:0] dest_in
+    input [3:0] dest_in,
 
-    output reg [31:0] pc
-    output wb_en, mem_r_en, mem_w_en,
-    output [31:0] alu_res,
-    output [31:0] val_rm,
-    output [3:0] dest
+    output reg [31:0] pc,
+    output reg wb_en, mem_r_en, mem_w_en,
+    output reg [31:0] alu_res,
+    output reg [31:0] val_rm,
+    output reg [3:0] dest
     
 );
     always @(posedge clk, posedge rst) begin

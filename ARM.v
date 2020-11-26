@@ -45,6 +45,8 @@ module ARM (input clk,
     wire[11:0] id_shift_operand_out;
     wire id_carry_out;
 
+    wire [3:0] status_out;
+    
     ID_Stage id_stage(
         clk, rst,
         if_pc_out, 
@@ -112,7 +114,7 @@ module ARM (input clk,
         .alu_status(exe_alu_status_in),
 
         .PC(exe_pc_in),
-        .wb_en_out(exe_wb_en_in), mem_r_en_out(exe_mem_r_en_in), mem_w_en_out(exe_mem_w_en_in),
+        .wb_en_out(exe_wb_en_in), .mem_r_en_out(exe_mem_r_en_in), .mem_w_en_out(exe_mem_w_en_in),
         .alu_res(exe_alu_res_in),
         .val_rm_out(exe_val_rm_in),
         .dest_out(exe_dest_in)
@@ -133,7 +135,7 @@ module ARM (input clk,
     );
 
     // ################################# Status Register: ############################################
-    wire [3:0] status_out;
+    
     Status_Register status_reg (
         .clk(clk), .rst(rst),
         .s(id_status_w_en_out),

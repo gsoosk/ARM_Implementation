@@ -26,18 +26,17 @@ module EXE_Stage (
 
     // Val 2 Generator
     wire [31:0] val2, val1;
-    module Val_Two_Generator val_2_gen(
+    Val_Two_Generator val_two_gen(
         .Rm(val_rm),
         .shift_operand(shift_operand),
         .immediate(imm),
         .is_mem_instruction(is_mem_ins),
-        .result(val2);
+        .result(val2)
     );
 
     // ALU
     assign val1 = val_rn;
-    wire [3:0] alu_status;
-    module ALU alu(
+    ALU alu(
         .val1(val1), 
         .val2(val2),
         .exec_cmd(exec_cmd),
@@ -47,8 +46,7 @@ module EXE_Stage (
     );
 
     // Branch Address
-    wire [31:0] branch_address;
-    assign branch_address = PC_in + { {8{signed_immed_24[23]}, signed_immed_24};
+    assign branch_address = PC_in + {{8{signed_immed_24[23]}}, signed_immed_24};
 
 
 endmodule
