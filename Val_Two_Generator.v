@@ -14,24 +14,27 @@ module Val_Two_Generator(
     integer i = 0;
 
     // Helping wires
-    wire [5:0] shift_imm;
+    wire [4:0] shift_imm;
     assign shift_imm = shift_operand[11:7];
 
-    wire [4:0] rotate_imm;
+    wire [3:0] rotate_imm;
     assign rotate_imm = shift_operand[11:8];
 
     wire [1:0] shift;
     assign shift = shift_operand[6:5];
+
+    wire [7:0] immed_8;
+    assign immed_8 = shift_operand[7:0]; 
  
     assign result = is_mem_instruction == 1'b1  ? { {20{shift_operand[11]}}, shift_operand} : 
                     immediate == 1'b1           ? imm_32_bit : 
-                    shift == `LSL               ? Rm << {shift_imm} :
-                    shift == `LSR               ? Rm >> {shift_imm} :
-                    shift == `ASR               ? Rm >> {shift_imm} :
-                    shift == `ROR               ? rm_rotate : 32'b1;
+                    shift == `LSL               ? Rm <<  {1'b0, shift_imm} :
+                    shift == `LSR               ? Rm >>  {1'b0, shift_imm} :
+                    shift == `ASR               ? Rm >>> {1'b0, shift_imm} :
+                    rm_rotate; // shift == `ROR 
 
     always@(*) begin
-        imm_32_bit = {24'b0, shift_operand[7:0]};
+        imm_32_bit = {24'b0, immed_8};
         for(i = 0; i < rotate_imm; i = i+1) begin
             imm_32_bit = {imm_32_bit[1:0], imm_32_bit[31:2]};
         end    
