@@ -46,12 +46,21 @@ module ARM (input clk,
     wire id_carry_out;
 
     wire [3:0] status_out;
+
+    wire wb_wb_en;
+    wire [31:0] wb_value;
+    wire [3:0] wb_dest;
     
     ID_Stage id_stage(
         clk, rst,
         if_pc_out, 
         if_instruction_out,
         status_out,
+
+        wb_wb_en, 
+        wb_value,
+        wb_dest,
+
         id_pc_in,
         id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
         id_exec_cmd_in,
@@ -185,20 +194,30 @@ module ARM (input clk,
     );
 
     // ################################### Write Block Stage: #######################################
-    wire[31:0] wb_pc_in, wb_pc_out;
+    wire[31:0] wb_pc_in;
+
+
     WB_Stage wb_stage(
         clk, 
         rst, 
         mem_pc_out, 
-        wb_pc_in
+        mem_wb_en_out, mem_mem_r_en_out,
+        mem_alu_res_out,
+        mem_dest_out,
+        mem_data_mem_out,
+        wb_pc_in,
+        wb_wb_en,
+        wb_value,
+        wb_dest 
     );
-    WB_Stage_Reg wb_stage_reg(
-        clk, 
-        rst, 
-        flush, 
-        freeze,
-        wb_pc_in, 
-        wb_pc_out
-    ); 
+    // wire[31:0] wb_pc_out;
+    // WB_Stage_Reg wb_stage_reg(
+    //     clk, 
+    //     rst, 
+    //     flush, 
+    //     freeze,
+    //     wb_pc_in, 
+    //     wb_pc_out
+    // ); 
     
 endmodule

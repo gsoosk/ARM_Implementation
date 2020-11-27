@@ -3,6 +3,11 @@ module ID_Stage (
     input [31:0] PC_in,
     input [31:0] instruction,
     input [3:0] status,
+
+    input wb_wb_en, 
+    input [31:0] wb_value,
+    input [3:0] wb_dest,
+
     output [31:0] PC,
     output mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
     output [3:0] exec_cmd,
@@ -80,9 +85,9 @@ module ID_Stage (
         .rst(rst), 
         .src1(rn), 
         .src2(src2), 
-        .Dest_wb(4'b0),
-        .Result_WB(32'b0),
-        .writeBackEn(1'b0), 
+        .Dest_wb(wb_dest),
+        .Result_WB(wb_value),
+        .writeBackEn(wb_wb_en), 
         .reg1(val_rn), 
         .reg2(val_rm)
     );
