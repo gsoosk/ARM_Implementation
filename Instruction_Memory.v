@@ -3,7 +3,7 @@ module Instruction_Memory(
     input[31:0] address, 
     output reg[31:0] instruction
 );
-    reg[7:0] data[1000:0];
+    reg[7:0] data [0:1023];
     always @(*) begin
         if (rst)
         begin

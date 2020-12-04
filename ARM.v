@@ -130,7 +130,7 @@ module ARM (input clk,
     EXE_Stage_Reg exe_stage_reg(
         .clk(clk), .rst(rst), .flush(flush), .freeze(freeze),
         .pc_in(exe_pc_in), 
-        .wb_en_in(exe_wb_en_in), .mem_r_en_in(exe_mem_r_en_in), .mem_w_en_in(exe_mem_r_en_in),
+        .wb_en_in(exe_wb_en_in), .mem_r_en_in(exe_mem_r_en_in), .mem_w_en_in(exe_mem_w_en_in),
         .alu_res_in(exe_alu_res_in),
         .val_rm_in(exe_val_rm_in),
         .dest_in(exe_dest_in),
@@ -153,12 +153,12 @@ module ARM (input clk,
     );
     // ################################# Memory Stage: ############################################
     wire[31:0] mem_pc_in, mem_pc_out;
-    wire mem_wb_en_in, mem_mem_r_en_in;
+    wire mem_wb_en_in, mem_r_en_in, mem_w_en_in;
     wire [31:0] mem_alu_res_in;
     wire [3:0] mem_dest_in;
     wire [31:0] mem_data_mem_in;
 
-    wire mem_wb_en_out, mem_mem_r_en_out;
+    wire mem_wb_en_out, mem_r_en_out;
     wire [31:0] mem_alu_res_out;
     wire [3:0] mem_dest_out;
     wire [31:0] mem_data_mem_out;
@@ -167,11 +167,12 @@ module ARM (input clk,
         clk, 
         rst, 
         exe_pc_out, 
-        exe_wb_en_out, exe_mem_r_en_out,
+        exe_wb_en_out, exe_mem_r_en_out, exe_mem_w_en_out,
         exe_alu_res_out,
+        exe_val_rm_out,
         exe_dest_out,
         mem_pc_in,
-        mem_wb_en_in, mem_mem_r_en_in,
+        mem_wb_en_in, mem_r_en_in, mem_w_en_in,
         mem_alu_res_in,
         mem_dest_in,
         mem_data_mem_in
@@ -182,12 +183,12 @@ module ARM (input clk,
         flush, 
         freeze,
         mem_pc_in, 
-        mem_wb_en_in, mem_mem_r_en_in,
+        mem_wb_en_in, mem_r_en_in, mem_w_en_in, 
         mem_alu_res_in,
         mem_dest_in,
         mem_data_mem_in,
         mem_pc_out,
-        mem_wb_en_out, mem_mem_r_en_out,
+        mem_wb_en_out, mem_r_en_out, mem_w_en_out,
         mem_alu_res_out,
         mem_dest_out,
         mem_data_mem_out
@@ -201,7 +202,7 @@ module ARM (input clk,
         clk, 
         rst, 
         mem_pc_out, 
-        mem_wb_en_out, mem_mem_r_en_out,
+        mem_wb_en_out, mem_r_en_out,
         mem_alu_res_out,
         mem_dest_out,
         mem_data_mem_out,

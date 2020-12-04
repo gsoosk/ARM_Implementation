@@ -25,7 +25,7 @@ module ALU (
             `SUB_ALU:
                 {c, alu_res} = val1 - val2;
             `SBC_ALU:
-                {c, alu_res} = val1 - val2 - 1;
+                {c, alu_res} = val1 - val2 - carry_in;
             `AND_ALU:
                 alu_res = val1 & val2;
             `ORR_ALU:
