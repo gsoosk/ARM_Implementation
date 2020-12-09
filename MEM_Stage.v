@@ -27,6 +27,5 @@ module MEM_Stage (
         .mem_r_en(mem_r_en),
         .address(alu_res),
         .dataToWrite(val_rm),
-        .result(mem_res_out))
-    assign data_mem_out = 32'b0;
+        .result(data_mem_out));
 endmodule
