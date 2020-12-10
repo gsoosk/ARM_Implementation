@@ -153,7 +153,7 @@ module ARM (input clk,
     );
     // ################################# Memory Stage: ############################################
     wire[31:0] mem_pc_in, mem_pc_out;
-    wire mem_wb_en_in, mem_r_en_in, mem_w_en_in;
+    wire mem_wb_en_in, mem_r_en_in;
     wire [31:0] mem_alu_res_in;
     wire [3:0] mem_dest_in;
     wire [31:0] mem_data_mem_in;

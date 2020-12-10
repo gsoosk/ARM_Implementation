@@ -12,14 +12,14 @@ module Data_Memory(
     assign start_address_2 = {start_address_0[31:2], 2'b10};
     assign start_address_3 = {start_address_0[31:2], 2'b11};
 
-    assign result = (mem_r_en == 1'b1 ? {memory[start_address_0], memory[start_address_1], memory[start_address_2], memory[start_address_3]} : 32'b0);
+    assign result = (mem_r_en == 1'b1 ? {memory[start_address_3], memory[start_address_2], memory[start_address_1], memory[start_address_0]} : 32'b0);
 
     always@(posedge clk) begin
         if(mem_w_en == 1'b1) begin
-            memory[start_address_3] <= dataToWrite[7:0];
-            memory[start_address_2] <= dataToWrite[15:8];
-            memory[start_address_1] <= dataToWrite[23:16];
-            memory[start_address_0] <= dataToWrite[31:24];
+            memory[start_address_0] <= dataToWrite[7:0];
+            memory[start_address_1] <= dataToWrite[15:8];
+            memory[start_address_2] <= dataToWrite[23:16];
+            memory[start_address_3] <= dataToWrite[31:24];
         end
     end
 endmodule
