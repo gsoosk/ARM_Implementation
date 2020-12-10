@@ -55,7 +55,7 @@ module ARM (input clk,
     
     wire hazard;
     wire two_src;
-    wire [3:0] rn, src_2
+    wire [3:0] rn, src_2;
 
     ID_Stage id_stage(
         clk, rst,
@@ -104,7 +104,7 @@ module ARM (input clk,
     wire exe_mem_w_en_out;
 
     
-    Hazard_Detection_Unit(
+    Hazard_Detection_Unit hazard_detection_unit(
         .clk(clk), 
         .rst(rst),
         .mem_wb_enable(exe_mem_w_en_out),
@@ -115,7 +115,7 @@ module ARM (input clk,
         .src_2(src_2),
         .two_src(two_src),
         .hazard_detected_signal(hazard_detected)
-    )
+    );
     // ################################### Executaion Stage: ################################
     wire[31:0] exe_pc_in, exe_pc_out;
 
