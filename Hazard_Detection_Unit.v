@@ -11,8 +11,8 @@ module Hazard_Detection_Unit(
 );
 
     assign hazard_detected_signal = (Rn == exe_dest & exe_wb_en == 1'b1) | 
-                                    (Rn == mem_dest & mem_wb_en) | 
-                                    (src_2 == exe_dest & exe_wb_en & two_src) | 
-                                    (src_2 == mem_dest & mem_wb_en & src_2) ? 1'b1 : 1'b0;
+                                    (Rn == mem_dest & mem_wb_en == 1'b1) | 
+                                    (src_2 == exe_dest & exe_wb_en == 1'b1 & two_src == 1'b1) | 
+                                    (src_2 == mem_dest & mem_wb_en == 1'b1 & two_src == 1'b1) ? 1'b1 : 1'b0;
 
 endmodule
