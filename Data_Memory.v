@@ -6,8 +6,8 @@ module Data_Memory(
 
     reg[7:0] memory [0:255];
 
-    wire[32:0] start_address_0, start_address_1, start_address_2, start_address_3;
-    assign start_address_0 = {start_address_0[31:1], 2'b00};
+    wire[31:0] start_address_0, start_address_1, start_address_2, start_address_3;
+    assign start_address_0 = {address[31:2], 2'b00} - 32'd1024;
     assign start_address_1 = {start_address_0[31:1], 1'b1};
     assign start_address_2 = {start_address_0[31:2], 2'b10};
     assign start_address_3 = {start_address_0[31:2], 2'b11};

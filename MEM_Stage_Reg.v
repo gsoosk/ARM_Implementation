@@ -1,12 +1,12 @@
 module MEM_Stage_Reg (
     input clk, rst, flush, freeze,
     input [31:0] pc_in, 
-    input wb_en, mem_r_en, mem_w_en, 
+    input wb_en, mem_r_en, 
     input [31:0] alu_res,
     input [3:0] dest,
     input [31:0] data_mem,
     output reg [31:0] pc,
-    output reg wb_en_out, mem_r_en_out, mem_w_en_out, 
+    output reg wb_en_out, mem_r_en_out, 
     output reg [31:0] alu_res_out,
     output reg [3:0] dest_out,
     output reg [31:0] data_mem_out
@@ -35,7 +35,6 @@ module MEM_Stage_Reg (
             pc <= pc_in;
             wb_en_out <= wb_en;
             mem_r_en_out <= mem_r_en;
-            mem_w_en_out <= mem_w_en;
             alu_res_out <= alu_res;
             dest_out <= dest;
             data_mem_out <= data_mem;

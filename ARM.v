@@ -164,34 +164,35 @@ module ARM (input clk,
     wire [31:0] mem_data_mem_out;
 
     MEM_Stage mem_stage(
-        clk, 
-        rst, 
-        exe_pc_out, 
-        exe_wb_en_out, exe_mem_r_en_out, exe_mem_w_en_out,
-        exe_alu_res_out,
-        exe_val_rm_out,
-        exe_dest_out,
-        mem_pc_in,
-        mem_wb_en_in, mem_r_en_in, mem_w_en_in,
-        mem_alu_res_in,
-        mem_dest_in,
-        mem_data_mem_in
+        .clk(clk), 
+        .rst(rst), 
+        .PC_in(exe_pc_out), 
+        .wb_en(exe_wb_en_out), .mem_r_en(exe_mem_r_en_out), .mem_w_en(exe_mem_w_en_out),
+        .alu_res(exe_alu_res_out),
+        .val_rm(exe_val_rm_out),
+        .dest(exe_dest_out),
+        .PC(mem_pc_in),
+        .wb_en_out(mem_wb_en_in), .mem_r_en_out(mem_r_en_in),
+        .mem_res_out(mem_alu_res_in),
+        .dest_out(mem_dest_in),
+        .data_mem_out(mem_data_mem_in)
     );
+
     MEM_Stage_Reg mem_stage_reg(
-        clk, 
-        rst, 
-        flush, 
-        freeze,
-        mem_pc_in, 
-        mem_wb_en_in, mem_r_en_in, mem_w_en_in, 
-        mem_alu_res_in,
-        mem_dest_in,
-        mem_data_mem_in,
-        mem_pc_out,
-        mem_wb_en_out, mem_r_en_out, mem_w_en_out,
-        mem_alu_res_out,
-        mem_dest_out,
-        mem_data_mem_out
+        .clk(clk), 
+        .rst(rst), 
+        .flush(flush), 
+        .freeze(freeze),
+        .pc_in(mem_pc_in), 
+        .wb_en(mem_wb_en_in), .mem_r_en(mem_r_en_in), 
+        .alu_res(mem_alu_res_in),
+        .dest(mem_dest_in),
+        .data_mem(mem_data_mem_in),
+        .pc(mem_pc_out),
+        .wb_en_out(mem_wb_en_out), .mem_r_en_out(mem_r_en_out),
+        .alu_res_out(mem_alu_res_out),
+        .dest_out(mem_dest_out),
+        .data_mem_out(mem_data_mem_out)
     );
 
     // ################################### Write Block Stage: #######################################

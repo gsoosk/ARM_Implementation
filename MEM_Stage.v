@@ -6,7 +6,7 @@ module MEM_Stage (
     input [31:0] val_rm,
     input [3:0] dest,
     output[31:0] PC,
-    output wb_en_out, mem_r_en_out, mem_w_en_out, 
+    output wb_en_out, mem_r_en_out, 
     output [31:0] mem_res_out,
     output [3:0] dest_out,
     output [31:0] data_mem_out
