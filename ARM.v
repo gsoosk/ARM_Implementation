@@ -102,12 +102,12 @@ module ARM (input clk,
     // ################################### Hazard: ################################ 
     wire [3:0] exe_dest_out;
     wire exe_mem_w_en_out;
-
+    wire exe_wb_en_out;
     
     Hazard_Detection_Unit hazard_detection_unit(
         .clk(clk), 
         .rst(rst),
-        .mem_wb_en(exe_mem_w_en_out),
+        .mem_wb_en(exe_wb_en_out),
         .mem_dest(exe_dest_out),
         .exe_wb_en(id_wb_en_out),
         .exe_dest(id_dest_out),
@@ -126,7 +126,7 @@ module ARM (input clk,
     wire [31:0] exe_val_rm_in;
     wire [3:0] exe_dest_in;
 
-    wire exe_wb_en_out, exe_mem_r_en_out;
+    wire exe_mem_r_en_out;
     wire [31:0] exe_alu_res_out;
     wire [31:0] exe_val_rm_out;
     
