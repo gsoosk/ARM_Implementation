@@ -19,7 +19,6 @@ module MEM_Stage (
     assign mem_w_en_out = mem_w_en;
     assign dest_out = dest;
 
-    // TODO: Data Memory
     Data_Memory data_memory(
         .clk(clk),
         .rst(rst),
