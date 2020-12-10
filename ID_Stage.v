@@ -7,6 +7,7 @@ module ID_Stage (
     input wb_wb_en, 
     input [31:0] wb_value,
     input [3:0] wb_dest,
+    input hazard,
 
     output [31:0] PC,
     output mem_r_en, mem_w_en, wb_en, status_w_en, branch_taken, imm,
@@ -14,11 +15,13 @@ module ID_Stage (
     output [31:0] val_rm, val_rn,
     output [23:0] signed_immed_24,
     output [3:0] dest,
-    output [11:0] shift_operand
+    output [11:0] shift_operand,
+    output two_src
 );
     assign PC = PC_in; 
 
-    //TODO: OR to hazard detection
+    // OR to hazard detection
+    assign two_src = ~imm | mem_w_en;
 
     // Chunking the Instruction 
     wire[3:0] cond;
@@ -62,13 +65,13 @@ module ID_Stage (
     wire condition_check_result;
     Condition_Check condition_check(
         .cond(cond),
-        .status(status), // TODO: Input of status should be taken from the status register's output
+        .status(status), // Input of status should be taken from the status register's output
         .result(condition_check_result)
     );
 
     // Condition Check MUX
     wire mux_selector;
-    assign mux_selector = ~condition_check_result; // TODO: OR with hazard should be added
+    assign mux_selector = ~condition_check_result | hazard; 
     
     wire[9:0] mux_input;
     assign mux_input = {mem_r_en_c, mem_w_en_c, wb_en_c, status_w_en_c, branch_taken_c, imm_c, exec_cmd_c};
