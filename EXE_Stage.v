@@ -52,7 +52,7 @@ module EXE_Stage (
     );
 
     // Branch Address
-    assign branch_address = PC_in + {{8{signed_immed_24[23]}}, signed_immed_24};
+    assign branch_address = PC_in + {{6{signed_immed_24[23]}}, signed_immed_24, 2'b0};
 
 
 endmodule
