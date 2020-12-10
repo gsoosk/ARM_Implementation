@@ -6,13 +6,15 @@ module ARM (input clk,
 
     wire id_branch_taken_out;
     wire [31:0] exe_branch_address_in;
+
+    wire hazard_detected;
     
     // ################################# Instruction Fetch Stage: ###################################
     wire[31:0] if_pc_in, if_instruction_in, if_pc_out, if_instruction_out;
     IF_Stage if_stage(
         clk, 
         rst, 
-        freeze, 
+        hazard_detected, 
         id_branch_taken_out,
         exe_branch_address_in,
         if_pc_in,
@@ -22,7 +24,7 @@ module ARM (input clk,
         clk,
         rst, 
         flush, 
-        freeze, 
+        hazard_detected, 
         if_pc_in, 
         if_instruction_in, 
         if_pc_out, 
@@ -51,6 +53,10 @@ module ARM (input clk,
     wire [31:0] wb_value;
     wire [3:0] wb_dest;
     
+    wire hazard;
+    wire two_src;
+    wire [3:0] rn, src_2
+
     ID_Stage id_stage(
         clk, rst,
         if_pc_out, 
@@ -60,6 +66,7 @@ module ARM (input clk,
         wb_wb_en, 
         wb_value,
         wb_dest,
+        hazard_detected,
 
         id_pc_in,
         id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
@@ -67,7 +74,9 @@ module ARM (input clk,
         id_val_rm_in, id_val_rn_in,
         id_signed_immed_24_in,
         id_dest_in,
-        id_shift_operand_in
+        id_shift_operand_in,
+        two_src,
+        rn, src_2
     );
 
     ID_Stage_Reg id_stage_reg(
@@ -90,7 +99,23 @@ module ARM (input clk,
         id_shift_operand_out,
         id_carry_out
     );
+    // ################################### Hazard: ################################ 
+    wire [3:0] exe_dest_out;
+    wire exe_mem_w_en_out;
 
+    
+    Hazard_Detection_Unit(
+        .clk(clk), 
+        .rst(rst),
+        .mem_wb_enable(exe_mem_w_en_out),
+        .mem_dest(exe_dest_out),
+        .exe_wb_enable(id_wb_en_out),
+        .exe_dest(id_dest_out),
+        .Rn(rn),
+        .src_2(src_2),
+        .two_src(two_src),
+        .hazard_detected_signal(hazard_detected)
+    )
     // ################################### Executaion Stage: ################################
     wire[31:0] exe_pc_in, exe_pc_out;
 
@@ -101,10 +126,10 @@ module ARM (input clk,
     wire [31:0] exe_val_rm_in;
     wire [3:0] exe_dest_in;
 
-    wire exe_wb_en_out, exe_mem_r_en_out, exe_mem_w_en_out;
+    wire exe_wb_en_out, exe_mem_r_en_out;
     wire [31:0] exe_alu_res_out;
     wire [31:0] exe_val_rm_out;
-    wire [3:0] exe_dest_out;
+    
 
     EXE_Stage exe_stage(
         .clk(clk), .rst(rst),

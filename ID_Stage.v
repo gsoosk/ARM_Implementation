@@ -16,7 +16,8 @@ module ID_Stage (
     output [23:0] signed_immed_24,
     output [3:0] dest,
     output [11:0] shift_operand,
-    output two_src
+    output two_src,
+    output [3:0] rn, src2
 );
     assign PC = PC_in; 
 
@@ -34,7 +35,7 @@ module ID_Stage (
     assign opcode = instruction[24:21];
     wire s;
     assign s = instruction[20];
-    wire[3:0] rn, rd, rm;
+    wire[3:0] rd, rm;
     assign rn = instruction[19:16];
     assign rd = instruction[15:12];
     assign dest = rd;
@@ -80,7 +81,6 @@ module ID_Stage (
 
     // Register File
         // Register file address mux
-        wire[3:0] src2;
         assign src2 = mem_w_en ? rd : rm ;
 
     Register_File register_file(
