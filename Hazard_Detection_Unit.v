@@ -7,7 +7,7 @@ module Hazard_Detection_Unit(
     input [3:0] src_1,
     input [3:0] src_2,
     input two_src,
-    input fwd_en, forwarded,
+    input fwd_en, 
     input exec_mem_read_en,
     output hazard_detected_signal
 );
@@ -23,8 +23,7 @@ module Hazard_Detection_Unit(
     assign hazard_with_fwd = (src_1 == exe_dest & exe_wb_en == 1'b1) | 
                             (src_2 == exe_dest & exe_wb_en == 1'b1 & two_src == 1'b1) ? 1'b1 : 1'b0; 
 
-    assign hazard_detected_signal = forwarded ? 1'b0 :
-                                    fwd_en ? hazard_with_fwd & exec_mem_read_en :  
+    assign hazard_detected_signal = fwd_en ? hazard_with_fwd & exec_mem_read_en :  
                                     hazard_without_fwd;
     
 

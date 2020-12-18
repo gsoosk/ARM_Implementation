@@ -110,7 +110,6 @@ module ARM (input clk,
     wire exe_mem_w_en_out;
     wire exe_wb_en_out;
 
-    wire forwarded;
     
     Hazard_Detection_Unit hazard_detection_unit(
         .clk(clk), 
@@ -123,7 +122,6 @@ module ARM (input clk,
         .src_2(src_2),
         .two_src(two_src),
         .fwd_en(forwarding_en), 
-        .forwarded(forwarded),
         .exec_mem_read_en(id_mem_r_en_out),
         .hazard_detected_signal(hazard_detected)
     );
@@ -277,9 +275,8 @@ module ARM (input clk,
         .mem_wb_en(mem_wb_en_in),
 
         .sel_src1(fwd_sel_src_1), 
-        .sel_src2(fwd_sel_src_2),
+        .sel_src2(fwd_sel_src_2)
 
-        .forwarded(forwarded)
     );
     
 endmodule
