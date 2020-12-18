@@ -8,5 +8,5 @@ module TB();
 always begin
 clk = #10 !clk;
 end
- ARM cpu(clk,rst, 1'b0);
+ ARM cpu(clk,rst, 1'b1);
 endmodule
