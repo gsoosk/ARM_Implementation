@@ -1,3 +1,5 @@
+`include "Forwarding_Unit.v"
+
 module EXE_Stage (
     input clk, rst,
     input[31:0] PC_in,
@@ -8,6 +10,9 @@ module EXE_Stage (
     input [31:0] val_rm, val_rn,
     input [23:0] signed_immed_24,
     input [3:0] dest,
+
+    input [1:0] sel_src1, sel_src2,
+    input [3:0] mem_dest, wb_dest,
 
     output[31:0] branch_address,
     output [3:0] alu_status,
@@ -24,24 +29,34 @@ module EXE_Stage (
     assign mem_w_en_out = mem_w_en;
     assign wb_en_out = wb_en;
     assign dest_out = dest;
-    assign val_rm_out = val_rm;
 
     // is memory instruction identifier
     wire is_mem_ins;
     assign is_mem_ins = mem_r_en | mem_w_en;
 
+    // MUX for FWD_SEL_SRC2
+    assign val_rm_out = sel_src2 == `FORWARD_FROM_ID_SEL ? val_rm :
+                        sel_src2 == `FORWARD_FROM_MEM_SEL ? mem_dest :
+                        sel_src2 == `FORWARD_FROM_WB_SEL ? wb_dest :
+                        val_rm;
+
     // Val 2 Generator
     wire [31:0] val2, val1;
     Val_Two_Generator val_two_gen(
-        .Rm(val_rm),
+        .Rm(val_rm_out),
         .shift_operand(shift_operand),
         .immediate(imm),
         .is_mem_instruction(is_mem_ins),
         .result(val2)
     );
 
+
+    assign val1 = sel_src1 == `FORWARD_FROM_ID_SEL ? val_rn :
+                        sel_src1 == `FORWARD_FROM_MEM_SEL ? mem_dest :
+                        sel_src1 == `FORWARD_FROM_WB_SEL ? wb_dest :
+                        val_rn;
+
     // ALU
-    assign val1 = val_rn;
     ALU alu(
         .val1(val1), 
         .val2(val2),
