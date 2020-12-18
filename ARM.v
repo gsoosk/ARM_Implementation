@@ -1,5 +1,7 @@
 module ARM (input clk,
-            rst);
+            rst,
+            forwarding_en);
+
     wire flush, freeze;
     assign flush       = 1'b0;
     assign freeze      = 1'b0;
@@ -23,7 +25,7 @@ module ARM (input clk,
     IF_Stage_Reg if_stage_reg(
         clk,
         rst, 
-        flush, 
+        id_branch_taken_out, 
         hazard_detected, 
         if_pc_in, 
         if_instruction_in, 
@@ -55,7 +57,9 @@ module ARM (input clk,
     
     wire hazard;
     wire two_src;
-    wire [3:0] rn, src_2;
+
+    wire [3:0] src_1, src_2;
+    wire [3:0] id_src_1_out, id_src_2_out;
 
     ID_Stage id_stage(
         clk, rst,
@@ -76,11 +80,11 @@ module ARM (input clk,
         id_dest_in,
         id_shift_operand_in,
         two_src,
-        rn, src_2
+        src_1, src_2
     );
 
     ID_Stage_Reg id_stage_reg(
-        clk, rst, flush, freeze,
+        clk, rst, id_branch_taken_out, freeze,
         id_pc_in, 
         id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
         id_exec_cmd_in,
@@ -89,6 +93,7 @@ module ARM (input clk,
         id_dest_in,
         id_shift_operand_in,
         status_out[2],
+        src_1, src_2,
 
         id_pc_out,
         id_mem_r_en_out, id_mem_w_en_out, id_wb_en_out, id_status_w_en_out, id_branch_taken_out, id_imm_out,
@@ -97,12 +102,15 @@ module ARM (input clk,
         id_signed_immed_24_out,
         id_dest_out,
         id_shift_operand_out,
-        id_carry_out
+        id_carry_out,
+        id_src_1_out, id_src_2_out
     );
     // ################################### Hazard: ################################ 
     wire [3:0] exe_dest_out;
     wire exe_mem_w_en_out;
     wire exe_wb_en_out;
+
+    wire forwarded;
     
     Hazard_Detection_Unit hazard_detection_unit(
         .clk(clk), 
@@ -111,9 +119,12 @@ module ARM (input clk,
         .mem_dest(exe_dest_out),
         .exe_wb_en(id_wb_en_out),
         .exe_dest(id_dest_out),
-        .Rn(rn),
+        .src_1(src_1),
         .src_2(src_2),
         .two_src(two_src),
+        .fwd_en(forwarding_en), 
+        .forwarded(forwarded),
+        .exec_mem_read_en(id_mem_r_en_out),
         .hazard_detected_signal(hazard_detected)
     );
     // ################################### Executaion Stage: ################################
@@ -130,6 +141,7 @@ module ARM (input clk,
     wire [31:0] exe_alu_res_out;
     wire [31:0] exe_val_rm_out;
     
+    wire [1:0] fwd_sel_src_1, fwd_sel_src_2;
 
     EXE_Stage exe_stage(
         .clk(clk), .rst(rst),
@@ -142,6 +154,11 @@ module ARM (input clk,
         .val_rm(id_val_rm_out), .val_rn(id_val_rn_out),
         .signed_immed_24(id_signed_immed_24_out),
         .dest(id_dest_out),
+
+        .sel_src1(fwd_sel_src_1),
+        .sel_src2(fwd_sel_src_2),
+        .mem_wb_value(exe_alu_res_out),
+        .wb_wb_value(wb_value),
 
         .branch_address(exe_branch_address_in),
         .alu_status(exe_alu_status_in),
@@ -246,5 +263,23 @@ module ARM (input clk,
     //     wb_pc_in, 
     //     wb_pc_out
     // ); 
+
+    // ################################### Forwarding Unit: #######################################
+    Forwarding_Unit forwarding_unit(
+        .forwarding_en(forwarding_en),
+        .src1(id_src_1_out), 
+        .src2(id_src_2_out),
+
+        .wb_dest(wb_dest), 
+        .mem_dest(mem_dest_in),
+
+        .wb_wb_en(wb_wb_en), 
+        .mem_wb_en(mem_wb_en_in),
+
+        .sel_src1(fwd_sel_src_1), 
+        .sel_src2(fwd_sel_src_2),
+
+        .forwarded(forwarded)
+    );
     
 endmodule
