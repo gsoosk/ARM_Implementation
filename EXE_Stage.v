@@ -12,7 +12,7 @@ module EXE_Stage (
     input [3:0] dest,
 
     input [1:0] sel_src1, sel_src2,
-    input [3:0] mem_dest, wb_dest,
+    input [31:0] mem_wb_value, wb_wb_value,
 
     output[31:0] branch_address,
     output [3:0] alu_status,
@@ -36,8 +36,8 @@ module EXE_Stage (
 
     // MUX for FWD_SEL_SRC2
     assign val_rm_out = sel_src2 == `FORWARD_FROM_ID_SEL ? val_rm :
-                        sel_src2 == `FORWARD_FROM_MEM_SEL ? mem_dest :
-                        sel_src2 == `FORWARD_FROM_WB_SEL ? wb_dest :
+                        sel_src2 == `FORWARD_FROM_MEM_SEL ? mem_wb_value :
+                        sel_src2 == `FORWARD_FROM_WB_SEL ? wb_wb_value :
                         val_rm;
 
     // Val 2 Generator
@@ -52,8 +52,8 @@ module EXE_Stage (
 
 
     assign val1 = sel_src1 == `FORWARD_FROM_ID_SEL ? val_rn :
-                        sel_src1 == `FORWARD_FROM_MEM_SEL ? mem_dest :
-                        sel_src1 == `FORWARD_FROM_WB_SEL ? wb_dest :
+                        sel_src1 == `FORWARD_FROM_MEM_SEL ? mem_wb_value :
+                        sel_src1 == `FORWARD_FROM_WB_SEL ? wb_wb_value :
                         val_rn;
 
     // ALU
