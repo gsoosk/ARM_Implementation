@@ -23,7 +23,7 @@ module ARM (input clk,
     IF_Stage_Reg if_stage_reg(
         clk,
         rst, 
-        flush, 
+        id_branch_taken_out, 
         hazard_detected, 
         if_pc_in, 
         if_instruction_in, 
@@ -80,7 +80,7 @@ module ARM (input clk,
     );
 
     ID_Stage_Reg id_stage_reg(
-        clk, rst, flush, freeze,
+        clk, rst, id_branch_taken_out, freeze,
         id_pc_in, 
         id_mem_r_en_in, id_mem_w_en_in, id_wb_en_in, id_status_w_en_in, id_branch_taken_in, id_imm_in,
         id_exec_cmd_in,
