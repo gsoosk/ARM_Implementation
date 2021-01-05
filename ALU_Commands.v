@@ -11,3 +11,5 @@
 `define TST_ALU 4'b0110
 `define LDR_ALU 4'b0010
 `define STR_ALU 4'b0010
+`define MUL1_ALU 4'b1110
+`define MUL2_ALU 4'b1111

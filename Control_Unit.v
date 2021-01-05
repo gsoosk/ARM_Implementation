@@ -18,9 +18,11 @@
 `define TST 4'b1000
 `define LDR 4'b0100
 `define STR 4'b0100
+`define MUL 4'b0011
 
 
 module Control_Unit(
+    input clk,
     input [3:0] opcode,
     input s,
     input imm_in,
@@ -31,10 +33,14 @@ module Control_Unit(
     output reg wb_en,
     output reg status_w_en,
     output reg branch_taken,
-    output reg imm
+    output reg imm,
+    output reg mul_freeze,
+    output reg dest_plus_one
 );
 
-    always @(opcode, mode, s) begin
+    reg mult_cycle = 1'b0;
+
+    always @(opcode, mode, s, posedge clk) begin
         // Initial
         status_w_en = s;
         imm = imm_in;
@@ -44,6 +50,8 @@ module Control_Unit(
         wb_en = 1'b0;
         branch_taken = 1'b0;
         exec_cmd = 4'b000;
+        mul_freeze = 1'b0;
+        dest_plus_one = 1'b0;
 
 
         // Check Instruction
@@ -92,6 +100,20 @@ module Control_Unit(
                     `TST: begin
                         exec_cmd = `TST_ALU;
                     end 
+                    `MUL: begin
+                        if (mult_cycle == 1'b0) begin
+                            wb_en = 1'b1;
+                            exec_cmd = `MUL1_ALU;
+                            mul_freeze = 1'b1;
+                            mult_cycle = 1'b1;
+                        end
+                        else begin
+                            wb_en = 1'b1;
+                            exec_cmd = `MUL2_ALU;
+                            mult_cycle = 1'b0;
+                            dest_plus_one = 1'b1;
+                        end
+                    end
                 endcase
             end
             `MEM_INS_TYPE: begin

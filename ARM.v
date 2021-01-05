@@ -10,11 +10,16 @@ module ARM (input clk,
     wire hazard_detected;
     
     // ################################# Instruction Fetch Stage: ###################################
+    wire mul_freeze;
+    wire id_freeze;
+
+    assign id_freeze = hazard_detected | mul_freeze;
+
     wire[31:0] if_pc_in, if_instruction_in, if_pc_out, if_instruction_out;
     IF_Stage if_stage(
         clk, 
         rst, 
-        hazard_detected, 
+        id_freeze, 
         id_branch_taken_out,
         exe_branch_address_in,
         if_pc_in,
@@ -24,7 +29,7 @@ module ARM (input clk,
         clk,
         rst, 
         id_branch_taken_out, 
-        hazard_detected, 
+        id_freeze, 
         if_pc_in, 
         if_instruction_in, 
         if_pc_out, 
@@ -76,7 +81,8 @@ module ARM (input clk,
         id_dest_in,
         id_shift_operand_in,
         two_src,
-        rn, src_2
+        rn, src_2,
+        mul_freeze
     );
 
     ID_Stage_Reg id_stage_reg(

@@ -17,7 +17,8 @@ module ID_Stage (
     output [3:0] dest,
     output [11:0] shift_operand,
     output two_src,
-    output [3:0] rn, src2
+    output [3:0] rn, src2,
+    output mul_freeze
 );
     assign PC = PC_in; 
 
@@ -38,7 +39,6 @@ module ID_Stage (
     wire[3:0] rd, rm;
     assign rn = instruction[19:16];
     assign rd = instruction[15:12];
-    assign dest = rd;
     assign rm = instruction[3:0];
     assign shift_operand = instruction[11:0];
     assign signed_immed_24 = instruction[23:0];
@@ -46,8 +46,10 @@ module ID_Stage (
 
     // Control Unit
     wire mem_r_en_c, mem_w_en_c, wb_en_c, status_w_en_c, branch_taken_c, imm_c;
+    wire dest_plus_one;
     wire[3:0] exec_cmd_c;
     Control_Unit control_unit(
+        .clk(clk),
         .opcode(opcode),
         .s(s),
         .imm_in(immediate),
@@ -58,9 +60,13 @@ module ID_Stage (
         .wb_en(wb_en_c),
         .status_w_en(status_w_en_c),
         .branch_taken(branch_taken_c),
-        .imm(imm_c)
+        .imm(imm_c),
+        .mul_freeze(mul_freeze),
+        .dest_plus_one(dest_plus_one)
     );
 
+    // DEST
+    assign dest = dest_plus_one ? rd + 1 : rd;
 
     // Condition Check
     wire condition_check_result;

@@ -10,9 +10,11 @@ module ALU (
 );
     reg c, v;
     wire z, n;
+    reg [31:0] temp;
     always @(*) begin
         c = 1'b0;
         v = 1'b0;
+        temp = 32'b0;
         case (exec_cmd)
             `MOV_ALU:
                 alu_res = val2;
@@ -40,6 +42,10 @@ module ALU (
                 alu_res = val1 + val2;
             `STR_ALU:
                 alu_res = val1 + val2;
+            `MUL1_ALU:
+                {temp, alu_res} = val1 * val2;
+            `MUL2_ALU:
+                {alu_res, temp} = val1 * val2;
         endcase
         // If 2 Two's Complement numbers are added, and they both have the
         // same sign (both positive or both negative), then overflow occurs
