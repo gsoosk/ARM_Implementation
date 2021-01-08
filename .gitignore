@@ -1,5 +1,5 @@
 *.bak
-
+.DS_Store
 
 # Created by https://www.toptal.com/developers/gitignore/api/modelsim
 # Edit at https://www.toptal.com/developers/gitignore?templates=modelsim
